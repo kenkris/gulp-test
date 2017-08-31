@@ -1,0 +1,1 @@
+function test1(){console.log("AAAAAAAAA")}function someThing(o,n){for(var A in o)console.log(o[A]+" *** "+A);return!0}var glb={firstName:"",lastName:""};
