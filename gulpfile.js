@@ -1,17 +1,26 @@
 //  Main gulp
 const gulp = require('gulp');
 
-//  Plugins
+/**
+ *  gulp plugins
+ */
+
+//  Uglify, used to minify
 const uglify = require('gulp-uglify');
+
+//  concar, used to concat multiple files into one file
+const concat = require('gulp-concat');
+
+/**
+ *  Functions
+ */
 
 
 //  Default gulp func  run on ">gulp"
-gulp.task('default', function(){
-	return console.log('Default action');
-});
+gulp.task('default', ['copyHTML', 'concatAndMinifyJS']);
 
 //  Copy static html to dest
-gulp.task('copyHtml', function(){
+gulp.task('copyHTML', function(){
 	gulp.src('src/*.html')
 		.pipe(gulp.dest('buildOutput'));
 });
@@ -22,3 +31,20 @@ gulp.task('minifyJS', function(){
 		.pipe(uglify())
 		.pipe(gulp.dest('buildOutput/js'));
 });
+
+//  Concat and minify js files
+gulp.task('concatAndMinifyJS', function(){
+	gulp.src('src/js/*.js')
+		.pipe(concat('main.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest('buildOutput/js'));
+});
+
+//  Watch, automatically run functions when file change
+gulp.task('watch', function(){
+	gulp.watch('src/js/*.js', ['concatAndMinifyJS']);
+	gulp.watch('src/*.html', ['concatAndMinifyJS']);
+});
+
+
+
